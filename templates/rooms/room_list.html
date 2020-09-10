@@ -1,0 +1,36 @@
+<!-- prettier-ignore -->
+
+{% extends "base.html" %} 
+
+{% block page_name %} 
+
+  home 
+
+{% endblock page_name %} 
+
+{% block content %}
+
+{{now}}
+
+<!-- prettier-ignore -->
+
+{% for room in rooms%}
+<h4><a href="{% url "rooms:detail" room.pk%}">{{room.name}} / ${{room.price}}</h4></a>
+
+{% endfor%}
+
+<h5>
+  {% if page_obj.has_previous %}
+  <a href="?page={{page_obj.previous_page_number}}">Previous</a>
+  {% endif%}
+  <!-- prettier-ignore -->
+
+  page: {{page_obj.number}} of {{page_obj.paginator.num_pages}} 
+  
+  {% if page_obj.has_next %}
+  <a href="?page={{page_obj.next_page_number}}">Next</a>
+  {% endif%}
+</h5>
+<!-- prettier-ignore -->
+
+{% endblock content %}
