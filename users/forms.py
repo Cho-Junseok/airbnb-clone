@@ -32,6 +32,14 @@ class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     password1 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        try:
+            models.User.objects.get(username=email)
+            raise forms.ValidationError("User already exists")
+        except models.User.DoesNotExist:
+            return email
+
     def clean_password1(self):
         password = self.cleaned_data.get("password")
         password1 = self.cleaned_data.get("password1")
@@ -47,5 +55,4 @@ class SignUpForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         user.username = email
         user.set_password(password)
-        print(user)
         user.save()
